@@ -28,11 +28,24 @@ async def get_current_exchange_rate(base_currency: str, target_currency: str) ->
         print(f"Произошла ошибка: {e}")
 
 
-async def main():
+async def main() -> None:
     base_currency = "USD"
     target_currency = input("Введите валюту (например, RUB, BYN): ").strip().upper()
     await get_current_exchange_rate(base_currency, target_currency)
 
 
+async def get_multiple_rates() -> None:
+    '''
+    Пример работы
+    '''
+    tasks = [
+        get_current_exchange_rate("USD", "RUB"),
+        get_current_exchange_rate("USD", "EUR"),
+        get_current_exchange_rate("USD", "JPY"),
+    ]
+    await asyncio.gather(*tasks)
+
+
 if __name__ == "__main__":
     asyncio.run(main())
+    asyncio.run(get_multiple_rates())
