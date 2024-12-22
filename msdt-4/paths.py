@@ -1,5 +1,6 @@
 RESULT_PATH = 'msdt-3/result.json'
 CSV_PATH = 'msdt-3/4.csv'
+LOGS = 'msdt-4/logs.txt'
 REGULAR = {
     "telephone"  : "^\\+7-\\(\\d{3}\\)-\\d{3}-\\d{2}-\\d{2}$",
     "height"     : "^[0-2]\\.\\d{2}$",
