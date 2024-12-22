@@ -1,6 +1,10 @@
 import json
 import hashlib
+import csv
+import re
 from typing import List
+
+from paths import RESULT_PATH, CSV_PATH
 
 """
 В этом модуле обитают функции, необходимые для автоматизированной проверки результатов ваших трудов.
@@ -34,4 +38,33 @@ def serialize_result(variant: int, checksum: str) -> None:
     :param variant: номер вашего варианта
     :param checksum: контрольная сумма, вычисленная через calculate_checksum()
     """
-    pass
+    result = {
+        "variant": variant,
+        "checksum": checksum
+    }
+    with open(RESULT_PATH, 'w', encoding='utf-8') as file:
+        json.dump(result, file)
+
+
+def read_csv(path: str) -> list[list[str]]:
+    """
+    read csv to list
+    """
+    with open(path, 'r', encoding="utf-16") as file:
+        return [row for row in csv.reader(file, delimiter=";")][1:]
+
+
+def validate_data(data: list[list[str]], regular: dict) -> list[int]:
+    """
+    find invalide indexs in file
+    """
+    invalid_rows = []
+    for row_number, row in enumerate(data):
+        for _, (field, key) in enumerate(zip(row, regular.keys())):
+            pattern = regular[key]
+            if not re.fullmatch(pattern, field):
+                invalid_rows.append(row_number)
+                break
+
+    return invalid_rows
+
